@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true, trim: true },
   email: { type: String, requried: true, unique: true, match: [/.+@.+\..+/, "Please enter a valid e-mail address"]},
-  thoughts: [{ type: Schema.Types.ObjectId, ref: "Thought" }],
-  friends: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  });
+  thoughts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Thought" }],
+  friends: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }] 
+});
  
 
 userSchema.virtual("friendCount").get(function() {

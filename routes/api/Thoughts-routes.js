@@ -16,7 +16,7 @@ app.get('/thoughts', async (req, res) => {
   });
 
 // Get one thoughts route 
-  app.get('/thoughts/{_id}', async (req, res) => {
+  app.get('/thoughts/:id', async (req, res) => {
     try {
       const result = await Thought.findById({ _id: req.params._id })
       res.status(200).json(result);
@@ -39,7 +39,7 @@ app.post('/thoughts', (req, res) => {
   });
 
 // update thought route
-app.update('/thoughts/{_id}', async (req, res) => {
+app.put('/thoughts/:id', async (req, res) => {
     try {
       const result = await thoughts.findOneAndUpdate({ _id: req.params._id }, { $set: req.body });
       res.status(200).json(result);
@@ -51,7 +51,7 @@ app.update('/thoughts/{_id}', async (req, res) => {
   });
 
 // delete user route
-app.delete('/thoughts/{_id}', async (req, res) => {
+app.delete('/thoughts/:id', async (req, res) => {
     try {
       const result = await thoughts.findOneAndDelete({ _id: req.params._id });
       res.status(200).json(result);

@@ -14,7 +14,7 @@ app.get('/users', async (req, res) => {
   });
 
 // Get one users route 
-  app.get('/users/{_id}', async (req, res) => {
+  app.get('/users/:id', async (req, res) => {
     try {
       const result = await User.findById({ _id: req.params._id })
         .populate('thoughts')
@@ -38,8 +38,8 @@ app.post('/users', (req, res) => {
     }
   });
 
-// Post update user route
-app.update('/users/{_id}', async (req, res) => {
+//  update user route
+app.put('/users/:id', async (req, res) => {
     try {
       const result = await Users.findOneAndUpdate({ _id: req.params._id }, { $set: req.body });
       res.status(200).json(result);
@@ -50,8 +50,8 @@ app.update('/users/{_id}', async (req, res) => {
     }
   });
 
-// Post delete user route
-app.delete('/users/{_id}', async (req, res) => {
+// delete user route
+app.delete('/users/:id', async (req, res) => {
     try {
       const result = await Users.findOneAndDelete({ _id: req.params._id });
       res.status(200).json(result);
