@@ -2,29 +2,6 @@
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
 
-// TODO: Create an aggregate function to get the number of users overall
-const headCount = async () => {
-  // Your code here
-  const numberOfusers = await User.aggregate();
-  return numberOfusers;
-}
-
-// Execute the aggregate method on the user model and calculate the overall grade by using the $avg operator
-const grade = async (userId) =>
-  user.aggregate([
-    // TODO: Ensure we include only the user who can match the given ObjectId using the $match operator
-    {
-      // Your code here
-    },
-    {
-      $unwind: '$assignments',
-    },
-    // TODO: Group information for the user with the given ObjectId alongside an overall grade calculated using the $avg operator
-    {
-      // Your code here
-    },
-  ]);
-
 module.exports = {
   // Get all users
   async getUsers(req, res) {
@@ -32,7 +9,6 @@ module.exports = {
       const users = await User.find();
       const userObj = {
         users,
-        headCount: await headCount(),
       };
       return res.json(userObj);
     } catch (err) {
@@ -44,7 +20,6 @@ module.exports = {
   async getSingleUser(req, res) {
     try {
       const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v')
         .lean();
 
       if (!user) {
@@ -53,13 +28,13 @@ module.exports = {
 
       res.json({
         user,
-        grade: await grade(req.params.userId),
       });
     } catch (err) {
       console.log(err);
       return res.status(500).json(err);
     }
   },
+  
   // create a new user
   async createUser(req, res) {
     try {
@@ -69,6 +44,7 @@ module.exports = {
       res.status(500).json(err);
     }
   },
+
   // Delete a user and remove them from the thought
   async deleteUser(req, res) {
     try {
