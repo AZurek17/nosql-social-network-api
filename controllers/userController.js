@@ -1,12 +1,18 @@
 // ObjectId() method for converting userId string into an ObjectId for querying database
 const { ObjectId } = require('mongoose').Types;
-const { User, Thought } = require('../models');
+const { User, Thought } = require("../models");
 
 module.exports = {
   // Get all users
   async getUsers(req, res) {
     try {
-      const users = await User.find();
+      const users = await User.find()
+        .populate("thoughts")
+        .populate("friends");
+
+      if (!users) {
+        return res.status(404).json({ message: "No users found!" });
+      }
       res.json(users);
     } catch (err) {
       res.status(500).json(err);
@@ -15,11 +21,11 @@ module.exports = {
   // Get a single user
   async getSingleUser(req, res) {
     try {
-      const user = await User.findOne({ _id: req.params.userId })
-        .select('-__v');
+      const user = await User.findOne({ _id: req.params.userId });
+      // .select('-__v');
 
       if (!user) {
-        return res.status(404).json({ message: 'No user with that ID' });
+        return res.status(404).json({ message: "No user with that ID" });
       }
 
       res.json(user);
@@ -42,18 +48,18 @@ module.exports = {
       const user = await User.findOneAndRemove({ _id: req.params.userId });
 
       if (!user) {
-        return res.status(404).json({ message: 'No user with that ID' });
+        return res.status(404).json({ message: "No user with that ID" });
       }
 
       await Thought.deleteMany({ _id: { $in: user.thoughts } });
-      res.json({ message: 'User and associated apps deleted!' })
+      res.json({ message: "User and associated apps deleted!" });
     } catch (err) {
       res.status(500).json(err);
     }
   },
 
   // Update a user
- 
+
   async updateUser(req, res) {
     try {
       const user = await User.findOneAndUpdate(
@@ -63,7 +69,7 @@ module.exports = {
       );
 
       if (!user) {
-        return res.status(404).json({ message: 'No user with this id!' });
+        return res.status(404).json({ message: "No user with this id!" });
       }
 
       res.json(user);
@@ -73,11 +79,10 @@ module.exports = {
     }
   },
 
-
   // Add an friend to a user
   async addFriend(req, res) {
     try {
-      console.log('You are adding an friend');
+      console.log("You are adding an friend");
       console.log(req.body);
       const user = await User.findOneAndUpdate(
         { _id: req.params.userId },
@@ -88,7 +93,7 @@ module.exports = {
       if (!user) {
         return res
           .status(404)
-          .json({ message: 'No user found with that ID :(' })
+          .json({ message: "No user found with that ID :(" });
       }
 
       res.json(user);
@@ -108,7 +113,7 @@ module.exports = {
       if (!user) {
         return res
           .status(404)
-          .json({ message: 'No user found with that ID :(' });
+          .json({ message: "No user found with that ID :(" });
       }
 
       res.json(user);

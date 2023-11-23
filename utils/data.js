@@ -107,7 +107,7 @@ const possibleReactions = [
   'sql',
 ];
 
-// const users = [];
+const users = [];
 
 // Get a random item given an array
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
@@ -121,6 +121,7 @@ const getRandomThoughts = (int) => {
   let results = [];
   for (let i = 0; i < int; i++) {
     results.push({
+      
       thoughtText: getRandomArrItem(appDescriptions),
       username: getRandomName(),
       reactions: [...getThoughtReactions(3)],
