@@ -18,7 +18,7 @@ connection.once('open', async () => {
   }
 
   const users = [];
-  const thoughts = getRandomThoughts(10);
+  const thoughts = [];
 
   for (let i = 0; i < 20; i++) {
     const username = getRandomName();
