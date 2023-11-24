@@ -1,13 +1,52 @@
 const connection = require("../config/connection");
-const { User, Thought, Reaction } = require("../models");
+const { User, Thought } = require("../models");
 
 const users = [
-  "Adam","Andy","John", "Ryan", "darek", 
-  "Lillian", "Chris", "Rosa","Daniel", "Nathan", "Kevin"];
-const email = [
-  "adam@gmail.com", "andy@gmail.com", "john@gmail.com", 
-  "ryan@gmail.com", "darek@gmail.com", "lillian@gmail.com",
-  "chris@gmail.com", "rosa@gmail.com","daniel@gmail.com", "nathan@gmail.com", "kevin@gmail.com"];
+  {
+      username: 'Adam',
+      email: 'adam@gmail.com',
+  },
+  {
+      username: 'Andy',
+      email: 'andy@gmail.com'
+  },
+  {
+      username: 'Rosa',
+      email: 'rosa@gmail.com'
+  },
+  {
+      username: 'Lillian',
+      email: 'lillian@gmail.com'
+  },
+  {
+      username: 'Nathan',
+      email: 'nathan@gmail.com'
+  },
+  {
+      username: 'Daniel',
+      email: 'daniel@gmail.com'
+  },
+  {
+      username: 'Ryan',
+      email: 'ryan@gmail.com'
+  },
+  {
+      username: 'John',
+      email: 'john@gmail.com'
+  },
+  {
+      username: 'Javier',
+      email: 'javier@gmail.com'
+  },
+  {
+      username: 'Jose',
+      email: 'jose@gmail.com'
+  },
+  {
+      username: 'Kevin',
+      email: 'kevin@gmail.com'
+  },
+]
 
 const appDescriptions = [
   'Decision Tracker',
@@ -33,16 +72,16 @@ const appDescriptions = [
 // Get a random item given an array
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
-// Gets a random full name
-const getRandomUser = () =>
-  `${getRandomArrItem(users)} ${getRandomArrItem(email)}`;
+// // Gets a random full name
+// const getRandomUser = () =>
+//   `${getRandomArrItem(users)} ${getRandomArrItem(email)}`;
 
   const getRandomThoughts = (int) => {
     const results = [];
     for (let i = 0; i < int; i++) {
       results.push({
         thoughtText: getRandomArrItem(appDescriptions),
-        username: getRandomUser(),
+        // username: User(),
       });
     }
     return results;
@@ -62,32 +101,31 @@ connection.once("open", async () => {
       await connection.dropCollection('users');
     }
 
-  // await Thought.deleteMany({});
-  // await User.deleteMany({});
-   const users = [];
-   const thoughts = getRandomThoughts(5);
+  await Thought.deleteMany({});
+  await User.deleteMany({});
 
-   for (let i = 0; i < 10; i++) {
-   
-    // console.log(thoughts);
-
-    const newUser = getRandomUser();
-    const username = newUser.split(" ")[0];
-    const email = newUser.split(" ")[1].toLowerCase();
+  //  const users = [];
+  // const thoughts = [];
+    
+  //  for (let i = 0; i < 10; i++) {
   
-    // console.log(user);
-    users.push({
-      username,
-      email,
-      // thoughts,
-    });
-    };
+  //   const newUser = getRandomUser();
+  //   const username = newUser.split(" ")[0];
+  //   const email = newUser.split(" ")[1].toLowerCase();
+  
+  //   // console.log(user);
+  //   users.push({
+  //     username,
+  //     email,
+  //     // thoughts,
+  //   });
+  //   };
 
-  // await User.collection.insertMany(users);
-  // await Thought.collection.insertMany(thoughts);
+  const thoughts = getRandomThoughts(5);
 
-  // await User.collection.insertMany(users);
-
+  await Thought.collection.insertMany(thoughts);
+  await User.collection.insertMany(users);
+ 
   console.table(users);
   console.table(thoughts);
   console.info("Seeding complete! 🌱");
