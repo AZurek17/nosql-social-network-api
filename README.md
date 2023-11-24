@@ -15,8 +15,7 @@
 
  ## Description
 
-
-
+ A NoSQL database for a social network API to handle a large amount of unstructed data. The user will be able to add, update, delete and view specific information using the POST, PUT, DELETE AND GET methods.  
 
  ## Table of Contents
   
@@ -36,6 +35,20 @@ This application requires express, and mongoose.
 * To start the server, run: node server.js
 
 ## Usage
+
+Using the POST, PUT, DELETE AND GET methods, the user will be able to add, update, delete and view specific information on the database.
+
+Open insomnia and type in "localhost:3001/api/_" in the address bar. Check out the following routes:
+
+  /api/users  to get all users or create user
+  /api/users/:userId  to get one user, update and delete user
+  /api/users/:userId/friends/:friendId  to add or delete a friend
+  /api/thoughts   to get all thoughts or create thought
+  /api/thoughts/:thoughtId  to get one thought, update or delete.
+  /api/thoughts/:thoughtId/reactions  to create reaction
+  /api/thoughts/:thoughtId/reactions/:reactionId  to delete reaction
+
+
 
 ## License
 
