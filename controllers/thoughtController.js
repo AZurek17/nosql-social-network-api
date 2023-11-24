@@ -57,8 +57,8 @@ const thoughtController = {
     try{
       const thought = await Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { ThoughtText: req.body.thoughtText, username: req.body.username },
-      { new: true },
+      { $set: req.body },
+      { runValidators: true, new: true }
       );
       if (!thought) {
         res.status(404).json({ message: 'No thought with this id!' });
@@ -70,28 +70,19 @@ const thoughtController = {
   },
 
   // delete Thought
-  deleteThought(req, res) {
-    Thought.findOneAndDelete({ _id: req.params.thoughtId })
-      .then((dbThoughtData) => {
-        if (!dbThoughtData) {
-          return res.status(404).json({ message: "No thought with this id!" });
-        }
+  async deleteThought(req, res) {
+    try {
+      const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
 
-        // remove thought id from user's `thoughts` field
-        return User.findOneAndUpdate(
-          { thoughts: req.params.thoughtId },
-          { $pull: { thoughts: req.params.thoughtId } }, //$pull removes from an existing values that match a specified condition.
-          { new: true }
-        );
-      })
-      .then((user) =>
-        !user
-          ? res.status(404).json({
-              message: "Error deleting thought",
-            })
-          : res.json({ message: "Thought successfully deleted!" })
-      )
-      .catch((err) => res.status(500).json(err));
+      if (!thought) {
+        res.status(404).json({ message: 'No thought with that ID' });
+      }
+
+      await User.deleteMany({ _id: { $in: thought.users } });
+      res.json({ message: 'Thought and user deleted!' });
+    } catch (err) {
+      res.status(500).json(err);
+    }
   },
 
   // add reaction
@@ -110,19 +101,24 @@ const thoughtController = {
   },
 
   // delete reaction
-  removeReaction(req, res) {
-    Thought.findOneAndUpdate(
+  async removeReaction(req, res) {
+    try {
+      const thought = await Thought.findOneAndUpdate(
       { _id: req.params.thoughtId },
-      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { $pull: { reactions: { reactionId: req.params.reactionId } } },
       { new: true, runValidators: true }
     )
-      .then((thought) =>
-        !thought
-          ? res.status(404).json({ message: "No thought with this id!" })
-          : res.json(`Reaction deleted`)
-      )
-      .catch((err) => res.status(500).json(err));
-  },
+    if (!thought) {
+      return res
+        .status(404)
+        .json({ message: 'No thought found with that ID :(' });
+    }
+
+    res.json(thought);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+},
 };
 
 module.exports = thoughtController;
