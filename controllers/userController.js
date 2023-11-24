@@ -38,24 +38,24 @@ const userController = {
   },
 
   // update user by id
-  updateUser(req, res) {
-    User.findOneAndUpdate(
-      { _id: req.params.userId },
-      // { username: req.body.username, email: req.body.email },
-      // { new: true },
+  async updateUser(req, res) {
+    try {
+      const user = await User.findOneAndUpdate(
+        { _id: req.params.userId },
+        { $set: req.body },
+        { runValidators: true, new: true }
+      );
 
-      (err, result) => {
-        if (result) {
-          res.status(200).json(result);
-          console.log(`Updated: ${result}`);
-        } else {
-          console.log(err);
-          res.status(500).json({ message: "error", err });
-        }
+      if (!user) {
+        res.status(404).json({ message: 'No user with this id!' });
       }
-    );
-  },
 
+      res.json(user);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  },
+  
   // delete user
   deleteUser(req, res) {
     User.findOneAndDelete({ _id: req.params.userId })
