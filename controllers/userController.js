@@ -9,17 +9,22 @@ const userController = {
   },
 
   // get one user by id
+
   getSingleUser(req, res) {
-    User.findOne({ _id: req.params.id })
+    User.findOne({ _id: req.params.userId })
       .select("-__v")
       .populate("friends")
       .populate("thoughts")
-      .then((user) =>
-        !user
-          ? res.status(404).json({ message: "No user with that ID" })
-          : res.json(user)
-      )
-      .catch((err) => res.status(500).json(err));
+      .then((user) => {
+        if (!user) {
+          return res.status(404).json({ message: "No user with this id!" });
+        }
+        res.json(user);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.sendStatus(500);
+      });
   },
 
   // create user
@@ -35,9 +40,9 @@ const userController = {
   // update user by id
   updateUser(req, res) {
     User.findOneAndUpdate(
-      { _id: req.params.id },
-      { $set: req.body },
-      { runValidators: true, new: true },
+      { _id: req.params.userId },
+      { username: req.body.username, email: req.body.email },
+      { new: true },
 
       (err, result) => {
         if (result) {
@@ -53,13 +58,11 @@ const userController = {
 
   // delete user
   deleteUser({ params }, res) {
-    User.findOneAndDelete({ _id: params.id })
+    User.findOneAndDelete({ _id: params.userId })
       .then((dbUserData) => {
         if (!dbUserData) {
           return res.status(404).json({ message: "No user with this id!" });
         }
-        // BONUS: get ids of user's `thoughts` and delete them all
-        // $in to find specific things
         return Thought.deleteMany({ _id: { $in: dbUserData.thoughts } });
       })
       .then(() => {

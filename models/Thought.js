@@ -9,7 +9,7 @@ const thoughtSchema = new Schema(
       type: Date,
       default: Date.now,
       get: (timestamp) => dateFormat(timestamp),
-    }, //verify getter method
+    }, 
     username: { type: String, required: true },
     reactions: [Reaction],
   },
@@ -28,4 +28,4 @@ thoughtSchema.virtual("reactionCount").get(function () {
 
 const Thought = model("Thought", thoughtSchema);
 
-module.exports = Thought ;
+module.exports = Thought;

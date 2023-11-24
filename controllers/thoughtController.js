@@ -10,7 +10,7 @@ const thoughtController = {
 
   // get one Thought by id
   getSingleThought(req, res) {
-    Thought.findOne({ _id: req.params.id })
+    Thought.findOne({ _id: req.params.thoughtId })
       .select("-__v")
       .populate("reactions")
       .then((thought) => {
@@ -35,7 +35,7 @@ const thoughtController = {
       .then((thought) => {
         return User.findOneAndUpdate(
           { username: req.body.username },
-          { $addToSet: { thoughts: thought.id } },
+          { $addToSet: { thoughts: thought._id } },
           { new: true }
         );
       })
@@ -55,8 +55,8 @@ const thoughtController = {
   // update Thought by id
   updateThought(req, res) {
     Thought.findOneAndUpdate(
-      { _id: params.id },
-      { ThoughtText: req.body.ThoughtText, username: req.body.username },
+      { _id: params.thoughtId },
+      { ThoughtText: req.body.thoughtText, username: req.body.username },
       { new: true },
 
       (err, result) => {
