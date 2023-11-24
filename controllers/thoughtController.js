@@ -55,7 +55,7 @@ const thoughtController = {
   // update Thought by id
   updateThought(req, res) {
     Thought.findOneAndUpdate(
-      { _id: params.thoughtId },
+      { _id: req.params.thoughtId },
       { ThoughtText: req.body.thoughtText, username: req.body.username },
       { new: true },
 

@@ -41,8 +41,8 @@ const userController = {
   updateUser(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
-      { username: req.body.username, email: req.body.email },
-      { new: true },
+      // { username: req.body.username, email: req.body.email },
+      // { new: true },
 
       (err, result) => {
         if (result) {
@@ -57,8 +57,8 @@ const userController = {
   },
 
   // delete user
-  deleteUser({ params }, res) {
-    User.findOneAndDelete({ _id: params.userId })
+  deleteUser(req, res) {
+    User.findOneAndDelete({ _id: req.params.userId })
       .then((dbUserData) => {
         if (!dbUserData) {
           return res.status(404).json({ message: "No user with this id!" });

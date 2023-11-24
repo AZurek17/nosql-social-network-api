@@ -48,44 +48,44 @@ const users = [
   },
 ]
 
-// const appDescriptions = [
-//   'Decision Tracker',
-//   'Find My Phone',
-//   'Learn Piano',
-//   'Starbase Defender',
-//   'Tower Defense',
-//   'Monopoly Money Manager',
-//   'Movie trailers',
-//   'Hello world',
-//   'Stupid Social Media App',
-//   'Notes',
-//   'Messages',
-//   'Email',
-//   'Compass',
-//   'Firefox',
-//   'Running app',
-//   'Cooking app',
-//   'Poker',
-//   'Deliveries',
-// ];
+const appDescriptions = [
+  'Decision Tracker',
+  'Find My Phone',
+  'Learn Piano',
+  'Starbase Defender',
+  'Tower Defense',
+  'Monopoly Money Manager',
+  'Movie trailers',
+  'Hello world',
+  'Stupid Social Media App',
+  'Notes',
+  'Messages',
+  'Email',
+  'Compass',
+  'Firefox',
+  'Running app',
+  'Cooking app',
+  'Poker',
+  'Deliveries',
+];
 
-// Get a random item given an array
-// const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
+//Get a random item given an array
+const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // // Gets a random full name
 // const getRandomUser = () =>
 //   `${getRandomArrItem(users)} ${getRandomArrItem(email)}`;
 
-  // const getRandomThoughts = (int) => {
-  //   const results = [];
-  //   for (let i = 0; i < int; i++) {
-  //     results.push({
-  //       thoughtText: getRandomArrItem(appDescriptions),
-  //       username: User(),
-  //     });
-  //   }
-  //   return results;
-  // };  
+  const getRandomThoughts = (int) => {
+    const results = [];
+    for (let i = 0; i < int; i++) {
+      results.push({
+        thoughtText: getRandomArrItem(appDescriptions),
+        username: getRandomArrItem(users),
+      });
+    }
+    return results;
+  };  
 
 connection.on("error", (err) => err);
 
@@ -121,9 +121,9 @@ connection.once("open", async () => {
   //   });
   //   };
 
-  // const thoughts = getRandomThoughts(5);
+  const thoughts = getRandomThoughts(5);
 
-  // await Thought.collection.insertMany(thoughts);
+  await Thought.collection.insertMany(thoughts);
   await User.collection.insertMany(users);
  
   console.table(users);
