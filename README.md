@@ -2,7 +2,7 @@
 
 [Link to Walkthrough Video](#)
 
-![nosql-social-network-api](./images/Screenshot.png)
+![nosql-social-network-api](./Screenshot.png)
 
 ## Technology Used:
 
