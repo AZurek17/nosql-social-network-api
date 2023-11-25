@@ -3,10 +3,6 @@ const { User, Thought } = require("../models");
 
 const users = [
   {
-      username: 'Adam',
-      email: 'adam@gmail.com',
-  },
-  {
       username: 'Andy',
       email: 'andy@gmail.com'
   },
@@ -25,26 +21,6 @@ const users = [
   {
       username: 'Daniel',
       email: 'daniel@gmail.com'
-  },
-  {
-      username: 'Ryan',
-      email: 'ryan@gmail.com'
-  },
-  {
-      username: 'John',
-      email: 'john@gmail.com'
-  },
-  {
-      username: 'Javier',
-      email: 'javier@gmail.com'
-  },
-  {
-      username: 'Jose',
-      email: 'jose@gmail.com'
-  },
-  {
-      username: 'Kevin',
-      email: 'kevin@gmail.com'
   },
 ]
 
@@ -103,23 +79,6 @@ connection.once("open", async () => {
 
   await Thought.deleteMany({});
   await User.deleteMany({});
-
-  //  const users = [];
-  // const thoughts = [];
-    
-  //  for (let i = 0; i < 10; i++) {
-  
-  //   const newUser = getRandomUser();
-  //   const username = newUser.split(" ")[0];
-  //   const email = newUser.split(" ")[1].toLowerCase();
-  
-  //   // console.log(user);
-  //   users.push({
-  //     username,
-  //     email,
-  //     // thoughts,
-  //   });
-  //   };
 
   const thoughts = getRandomThoughts(5);
 
